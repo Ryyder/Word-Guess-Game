@@ -1,7 +1,7 @@
 var wins = 0; // user wins
 var loses = 0; // user loses
 var underSign = "_ ";
-var guessRemaining = 10; // remaining number of guess for user
+var guessRemaining = 12; // remaining number of guess for user
 var correctGuess = 0; // correct letter guessed
 var allLetters; //shows all the letters shown
 var userChoiceText = document.getElementById("user-choice-text"); //shows user input
@@ -10,14 +10,18 @@ var alreadyGuessed = document.getElementById("already-guessed"); // shows all th
 var underline = document.getElementById("under-line"); //underline for each letter of the game
 
 // array of games "words" that can be chosen
-var gameArray = ["Half-Life", "World of Warcraft", "League of Legends", "Final Fantasy", "Devil May Cry", "Street Fighter", "Kingdom Hearts", "Monster Hunter", "Tekken",
-"Forza", "Resident Evil", "Dark Souls", "Hearthstone", "Starcraft", "Diablo", "Metal Gear Solid"];
+var gameArray = ["half Life", "final fantasy", "devil may cry", "street fighter", "tekken",
+  "forza", "dark souls", "hearthstone", "starcraft", "diablo", "pokemon", "anthem", "division",
+  "smash bros"];
 
-// underscore array
+// "_" filled into this array
 var underScore = [];
 
 // throw guessed letters into an array
 var guessArray = [];
+
+// use this array to hold each character of chosenGame
+var splitArray = [];
 
 // holds chosen game from the random number generator
 var chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
@@ -26,7 +30,7 @@ var chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
 var nameLength = chosenGame.length;
 
 // generate underscores
-function underScoreFunc () {
+function underScoreFunc() {
   for (var j = 0; j < nameLength; j++) {
     underScore.push("_");
   }
@@ -36,81 +40,61 @@ function underScoreFunc () {
 // test
 console.log(underScoreFunc());
 
-// repeats the "_" string
-//var underSignOutput = underSign.repeat(nameLength);
+// splits the chosenGame into an array with individual characters
+function splitLetter() {
+  for (var h = 0; h < nameLength; h++) {
+    splitArray.push(chosenGame[h]);
+  }
+  return splitArray;
+}
+
+//test
+splitLetter();
+console.log(splitArray);
 
 // converts to lowercase incase user inputs a lower case character
 console.log(chosenGame.toLowerCase());
 
-document.onkeyup = function(event) {
+document.onkeyup = function (event) {
 
   // Determines which key was pressed.
   var userGuess = event.key.toLowerCase();
 
-  console.log(userGuess);
-  console.log(chosenGame.indexOf(userGuess));
+  // check to see if userGuess is in the chosenGame string
+  if (chosenGame.indexOf(userGuess) > -1) {
 
-  // ask ta
-   /* if(chosenGame.indexOf(userGuess) > -1 ) {
-    console.log(true);
-    //replace underscore with correct letter
-    underScore[chosenGame.indexOf(userGuess)] = userGuess;
-    console.log(underScore);
-  }  */
+    // iterate through the word and check to see if the user guess equal any letter in the word
+    for (var i = 0; i < nameLength; i++) {
 
+      // if userGuess is in the splitArray, we put it in the index of underScore array.
+      if (userGuess === splitArray[i]) {
+        // user guess decreases
+        guessRemaining--;
+        console.log("you have: " + guessRemaining + " remaining");
 
-  //print the number of underlines to the screen
-  //underline.textContent = "Please guess the word: " + underSignOutput;
+        // increase correct guess
+        correctGuess++;
+        console.log("you have: " + correctGuess + " correct letter");
 
-  //console.log(userGuess); // testing
-
-  // iterate through the word and check to see if the user guess equal any letter in the word
-  for (var i = 0; i < nameLength; i++) {
-    
-    // if the userGuess equals a letter in the chosenGame string
-    if (userGuess === chosenGame.charAt(i).toLowerCase()) {
-      // user guess decreases
-      guessRemaining--;
-      console.log("you have: " + guessRemaining + " remaining");
-
-      // increase correct guess
-      correctGuess++;
-      console.log("you have: " + correctGuess + " correct letter");
-
-      //add letter to guessArray and output to user
-      guessArray.push(event.key.toLowerCase());
-      console.log("guessed letter: " + guessArray);
-
-      console.log("letter at 0 " + chosenGame.charAt(0).toLowerCase());
-      
-      underScore[chosenGame.indexOf(userGuess)] = userGuess;
-      console.log(underScore);
-      //guessRemainingText.textContent = "Guess Remaining: " + guessRemaining;
-      
-      // show letter guessed
-      //console.log(userGuess); // testing
-      //console.log(guessRemaining); // testing
-      
-      // show letter guessed on the "_" lines
+        underScore[i] = userGuess;
+        console.log(underScore); //testing
+      }
     }
-    else {
-      // user guess decreases
-      /* guessRemaining--;
-      console.log(guessRemaining); */
+  }
+  else {
+    // user guess decreases
+    guessRemaining--;
+    console.log(guessRemaining);
 
-      //show letter guessed
-      /* guessArray.push(event.key.toLowerCase());
-      console.log(guessArray);
-      console.log(userGuess);
-      console.log(chosenGame.charAt(i).toLowerCase()); */
-      
-
-    }
+    //show letter guessed
+    guessArray.push(event.key.toLowerCase());
+    console.log(guessArray);
+    console.log(userGuess);
+    console.log(chosenGame.charAt(i).toLowerCase());
+  }
 
 
-    }
 
-  
 
 
 
