@@ -10,7 +10,7 @@ var alreadyGuessed = document.getElementById("already-guessed"); // shows all th
 var underline = document.getElementById("under-line"); //underline for each letter of the game
 
 // array of games "words" that can be chosen
-var gameArray = ["half Life", "final fantasy", "devil may cry", "street fighter", "tekken",
+var gameArray = ["half life", "final fantasy", "devil may cry", "street fighter", "tekken",
   "forza", "dark souls", "hearthstone", "starcraft", "diablo", "pokemon", "anthem", "division",
   "smash bros"];
 
@@ -48,6 +48,56 @@ function splitLetter() {
   return splitArray;
 }
 
+// define lose condition
+function loseCondition() {
+  if (guessRemaining == 0) {
+    alert("you lose.");
+  }
+  //reset the game after you win
+  resetGame();
+  console.log("lost game.");
+}
+
+// defines win condition
+function winCondition() {
+  if (underScore.toString() == splitArray.toString()) {
+    alert("You Win!");
+    wins++;
+  }
+  else {
+    console.log("arrays don't match.");
+  }
+  // reset the game after you lose
+  resetGame();
+  console.log("win game.");
+}
+
+//either win or lose, put inside, but at the end of win and at the end of the lose condition
+//pick a new word
+//reset guess array, split array, underscore array, guess remaining
+//update html wins and loses
+//another div to keep track of wins and loses
+
+// resets the game when the user either wins or loses
+function resetGame() {
+  //choose new word
+  //chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
+
+  //reset guesses to original amount
+  guessRemaining = 12;
+  
+  //clear out the arrays
+  guessArray.length = 0;
+  splitArray.length = 0;
+  underScore.length = 0;
+  console.log(chosenGame);
+  console.log(guessArray);
+  console.log(splitArray);
+  console.log(underScore);
+}
+
+
+
 //test
 splitLetter();
 console.log(splitArray);
@@ -57,40 +107,52 @@ console.log(chosenGame.toLowerCase());
 
 document.onkeyup = function (event) {
 
-  // Determines which key was pressed.
+  // Determines which key was pressed
   var userGuess = event.key.toLowerCase();
+
+  //check for lose condition
+  loseCondition();
+
+  guessRemainingText.innerHTML = "Guess Remaining: " + guessRemaining;
+  //alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
 
   // check to see if userGuess is in the chosenGame string
   if (chosenGame.indexOf(userGuess) > -1) {
 
+      // user guess decreases
+     /*  guessRemaining--;
+      console.log("you have: " + guessRemaining + " remaining"); *///testing
+
+      // increase correct guess
+      correctGuess++;
+      console.log("you have: " + correctGuess + " correct letter");//testing
+
+      //show letter guessed
+      if (guessArray.includes(userGuess)) {
+        console.log("already in the array.");
+        console.log(guessArray);
+      }
+      else {
+        guessRemaining--;
+        guessArray.push(userGuess);
+        console.log(guessRemaining);
+      } 
+
+      alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
+
     // iterate through the word and check to see if the user guess equal any letter in the word
     for (var i = 0; i < nameLength; i++) {
 
-      // if userGuess is in the splitArray, we put it in the index of underScore array.
-      if (userGuess === splitArray[i]) {
-        // user guess decreases
-        guessRemaining--;
-        console.log("you have: " + guessRemaining + " remaining");
+        // if userGuess is in the splitArray, we put it in the index of underScore array.
+        if (userGuess === splitArray[i]) {
+        
+          underScore[i] = userGuess;
+          console.log(underScore); //testing
+        }
 
-        // increase correct guess
-        correctGuess++;
-        console.log("you have: " + correctGuess + " correct letter");
-
-        underScore[i] = userGuess;
-        console.log(underScore); //testing
-      }
     }
-  }
-  else {
-    // user guess decreases
-    guessRemaining--;
-    console.log(guessRemaining);
-
-    //show letter guessed
-    guessArray.push(event.key.toLowerCase());
-    console.log(guessArray);
-    console.log(userGuess);
-    console.log(chosenGame.charAt(i).toLowerCase());
+    //check for our win condition
+    winCondition();
   }
 
 
