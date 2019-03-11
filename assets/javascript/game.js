@@ -81,7 +81,7 @@ function winCondition() {
 // resets the game when the user either wins or loses
 function resetGame() {
   //choose new word
-  //chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
+  chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
 
   //reset guesses to original amount
   guessRemaining = 12;
@@ -90,6 +90,7 @@ function resetGame() {
   guessArray.length = 0;
   splitArray.length = 0;
   underScore.length = 0;
+  //testing
   console.log(chosenGame);
   console.log(guessArray);
   console.log(splitArray);
