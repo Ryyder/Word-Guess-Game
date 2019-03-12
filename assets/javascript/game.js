@@ -10,9 +10,8 @@ var alreadyGuessed = document.getElementById("already-guessed"); // shows all th
 var underline = document.getElementById("under-line"); //underline for each letter of the game
 
 // array of games "words" that can be chosen
-var gameArray = ["half life", "final fantasy", "devil may cry", "street fighter", "tekken",
-  "forza", "dark souls", "hearthstone", "starcraft", "diablo", "pokemon", "anthem", "division",
-  "smash bros"];
+var gameArray = ["tekken", "forza", "dark souls", "hearthstone", "starcraft", "diablo", "pokemon", "anthem", "division",
+  "atlas", "bayonetta", "bioshock", "bomberman"];
 
 // "_" filled into this array
 var underScore = [];
@@ -52,10 +51,9 @@ function splitLetter() {
 function loseCondition() {
   if (guessRemaining == 0) {
     alert("you lose.");
+    resetGame();
   }
-  //reset the game after you win
-  resetGame();
-  console.log("lost game.");
+  console.log("checking if game lost.");
 }
 
 // defines win condition
@@ -63,13 +61,11 @@ function winCondition() {
   if (underScore.toString() == splitArray.toString()) {
     alert("You Win!");
     wins++;
+    resetGame();
   }
   else {
     console.log("arrays don't match.");
   }
-  // reset the game after you lose
-  resetGame();
-  console.log("win game.");
 }
 
 //either win or lose, put inside, but at the end of win and at the end of the lose condition
@@ -83,14 +79,22 @@ function resetGame() {
   //choose new word
   chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
 
+  //redo the length of the string
+  nameLength = chosenGame.length;
+
   //reset guesses to original amount
   guessRemaining = 12;
   
   //clear out the arrays
-  guessArray.length = 0;
-  splitArray.length = 0;
-  underScore.length = 0;
+  guessArray = [];
+  splitArray = [];
+  underScore = [];
+
+  //repopulate splitArray with "_"'s
+  splitLetter();
+
   //testing
+  console.log()
   console.log(chosenGame);
   console.log(guessArray);
   console.log(splitArray);
@@ -103,8 +107,9 @@ function resetGame() {
 splitLetter();
 console.log(splitArray);
 
+
 // converts to lowercase incase user inputs a lower case character
-console.log(chosenGame.toLowerCase());
+//console.log(chosenGame.toLowerCase());
 
 document.onkeyup = function (event) {
 
@@ -117,21 +122,23 @@ document.onkeyup = function (event) {
   guessRemainingText.innerHTML = "Guess Remaining: " + guessRemaining;
   //alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
 
+  guessArray.push(userGuess);
+
   // check to see if userGuess is in the chosenGame string
   if (chosenGame.indexOf(userGuess) > -1) {
 
       // user guess decreases
-     /*  guessRemaining--;
+     guessRemaining--;
       console.log("you have: " + guessRemaining + " remaining"); *///testing
 
       // increase correct guess
       correctGuess++;
-      console.log("you have: " + correctGuess + " correct letter");//testing
+      //console.log("you have: " + correctGuess + " correct letter");//testing
 
       //show letter guessed
       if (guessArray.includes(userGuess)) {
-        console.log("already in the array.");
-        console.log(guessArray);
+        //console.log("already in the array.");
+        //console.log(guessArray);
       }
       else {
         guessRemaining--;
@@ -148,17 +155,19 @@ document.onkeyup = function (event) {
         if (userGuess === splitArray[i]) {
         
           underScore[i] = userGuess;
-          console.log(underScore); //testing
+          //console.log(underScore); //testing
         }
 
     }
     //check for our win condition
     winCondition();
   }
+  // if userGuess is not in the string, decrease guessRemaining,and push letter in guessArray
+  else {
 
-
-
-
-
-
+    guessRemaining--;
+    guessArray.push(userGuess);
+    alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
+  }
+  
 }
