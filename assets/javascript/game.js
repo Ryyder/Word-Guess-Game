@@ -4,14 +4,17 @@ var underSign = "_ ";
 var guessRemaining = 12; // remaining number of guess for user
 var correctGuess = 0; // correct letter guessed
 var allLetters; //shows all the letters shown
+var winText = document.getElementById("win-text"); //wins text
+var loseText = document.getElementById("lose-text"); //lose text
 var userChoiceText = document.getElementById("user-choice-text"); //shows user input
 var guessRemainingText = document.getElementById("guess-remaining"); // shows guesses remaining
 var alreadyGuessed = document.getElementById("already-guessed"); // shows all the words guessed
 var underline = document.getElementById("under-line"); //underline for each letter of the game
+var mainTheme = document.getElementById("main-theme"); //plays music on click
 
 // array of games "words" that can be chosen
-var gameArray = ["tekken", "forza", "dark souls", "hearthstone", "starcraft", "diablo", "pokemon", "anthem", "division",
-  "atlas", "bayonetta", "bioshock", "bomberman"];
+var gameArray = ["goku", "vegeta", "broly", "yamcha", "krillin", "cell", "janemba", "shenron", "bulma",
+  "gohan", "trunks", "goten", "jiren", "zamasu"];
 
 // "_" filled into this array
 var underScore = [];
@@ -28,6 +31,17 @@ var chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
 // length of the video game name
 var nameLength = chosenGame.length;
 
+// on first click, plays sound. on second click, pauses sound
+function play(element) {
+  var audio = document.getElementById(element);
+  if (audio.paused) {
+    audio.play();
+  }
+  else {
+    audio.pause();
+  }
+}
+
 // generate underscores
 function underScoreFunc() {
   for (var j = 0; j < nameLength; j++) {
@@ -38,6 +52,7 @@ function underScoreFunc() {
 
 // test
 console.log(underScoreFunc());
+
 
 // splits the chosenGame into an array with individual characters
 function splitLetter() {
@@ -50,113 +65,107 @@ function splitLetter() {
 // define lose condition
 function loseCondition() {
   if (guessRemaining == 0) {
-    alert("you lose.");
+    loses++;
     resetGame();
   }
+  loseText.innerHTML = "Loses: " + loses;
   console.log("checking if game lost.");
 }
 
 // defines win condition
 function winCondition() {
   if (underScore.toString() == splitArray.toString()) {
-    alert("You Win!");
     wins++;
     resetGame();
+    winText.innerHTML = "Wins: " + wins;
   }
   else {
     console.log("arrays don't match.");
   }
 }
 
-//either win or lose, put inside, but at the end of win and at the end of the lose condition
-//pick a new word
-//reset guess array, split array, underscore array, guess remaining
-//update html wins and loses
-//another div to keep track of wins and loses
-
 // resets the game when the user either wins or loses
 function resetGame() {
-  //choose new word
+  // choose new word
   chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
 
   //redo the length of the string
   nameLength = chosenGame.length;
 
-  //reset guesses to original amount
+  // reset guesses to original amount
   guessRemaining = 12;
-  
-  //clear out the arrays
+
+  // clear out the arrays
   guessArray = [];
   splitArray = [];
   underScore = [];
 
-  //repopulate splitArray with "_"'s
+  // regenerate underscores
+  underScoreFunc();
+
+  // repopulate splitArray with "_"'s
   splitLetter();
 
-  //testing
-  console.log()
-  console.log(chosenGame);
-  console.log(guessArray);
-  console.log(splitArray);
-  console.log(underScore);
 }
 
-
-
-//test
+// call split letter
 splitLetter();
-console.log(splitArray);
+
+// print out the underscores to html document
+underline.innerHTML = "Word: " + underScore;
 
 
 // converts to lowercase incase user inputs a lower case character
-//console.log(chosenGame.toLowerCase());
-
 document.onkeyup = function (event) {
 
-  // Determines which key was pressed
+  // determines which key was pressed
   var userGuess = event.key.toLowerCase();
 
-  //check for lose condition
+  // check for lose condition
   loseCondition();
 
+  // prints guess remaining to html document
   guessRemainingText.innerHTML = "Guess Remaining: " + guessRemaining;
-  //alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
 
+  // add the user guess to the guessarray
   guessArray.push(userGuess);
+
+
 
   // check to see if userGuess is in the chosenGame string
   if (chosenGame.indexOf(userGuess) > -1) {
 
-      // user guess decreases
-     guessRemaining--;
-      console.log("you have: " + guessRemaining + " remaining"); *///testing
+    // play audio when key is pressed
+    document.getElementById("powerUp").play();
 
-      // increase correct guess
-      correctGuess++;
-      //console.log("you have: " + correctGuess + " correct letter");//testing
+    // user guess decreases
+    guessRemaining--;
 
-      //show letter guessed
-      if (guessArray.includes(userGuess)) {
-        //console.log("already in the array.");
-        //console.log(guessArray);
-      }
-      else {
-        guessRemaining--;
-        guessArray.push(userGuess);
-        console.log(guessRemaining);
-      } 
+    // only decrement guessRemaining once if already in guessArray
+    if (guessArray.includes(userGuess)) {
+  
+    }
+    else {
+      guessRemaining--;
+      guessArray.push(userGuess);
+      console.log(guessRemaining);
+    }
 
-      alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
+    // print out user guess to the html document
+    alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
+
 
     // iterate through the word and check to see if the user guess equal any letter in the word
     for (var i = 0; i < nameLength; i++) {
 
-        // if userGuess is in the splitArray, we put it in the index of underScore array.
-        if (userGuess === splitArray[i]) {
+      // if userGuess is in the splitArray, we put it in the index of underScore array.
+      if (userGuess === splitArray[i]) {
+
+        underScore[i] = userGuess;
         
-          underScore[i] = userGuess;
-          //console.log(underScore); //testing
-        }
+        // output the random word in html document
+        underline.innerHTML = "Word: " + underScore;
+      }
 
     }
     //check for our win condition
@@ -165,9 +174,11 @@ document.onkeyup = function (event) {
   // if userGuess is not in the string, decrease guessRemaining,and push letter in guessArray
   else {
 
+    // play sound on incorrect letter guessed
+    document.getElementById("hit").play();
     guessRemaining--;
     guessArray.push(userGuess);
-    alreadyGuessed.innerHTML = "Already Guessed: " + guessArray;
+    
   }
-  
+
 }

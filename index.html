@@ -4,23 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- bootstrap link -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <!-- css file -->
   <link rel = "stylesheet" type = "text/css" href = "assets/css/style.css" />
-
-  <title>Video Game Javascript Guessing Game</title>
+  
+  <title>Dragon BallZ Javascript Guessing Game</title>
 </head>
 <body>
-  <div>
-    <p id = "directions-text">Press any key to get started!</p>
-    <p id = "user-choice-text">You chose: </p>
-    <p id = "already-guessed">Already Guessed: </p>
-    <p id = "guess-remaining">Guesses: </p>
-    <p id = "under-line"></p>
-  </div>
 
+    <audio id = "main-theme">
+        <source src = "assets/images/CHA-LA HEAD CHA-LA - Dragonball Z (Opening Theme) [OST Full].mp3">
+    </audio>
 
+    <audio id = "broly">
+        <source src = "assets/images/10's (Remastered).mp3">
+    </audio>
 
+    <audio id = "vegeta">
+        <source src = "assets/images/Dbz Music - Vegeta's Hells Bells.mp3">
+    </audio>
 
+    <audio id = "powerUp">
+        <source src = "assets/images/Aura BurstSuper Saiyan Transformation Sound Effect (Read Description).mp3">
+    </audio>
+
+    <audio id = "hit">
+        <source src = "assets/images/Dragon Ball Z Heavy Punch sound effect.mp3">
+    </audio>
+
+    <audio id = "goku">
+        <source src = "assets/images/Ultra Instinct Theme (Official Version).mp3">
+    </audio>
+
+    <div class="jumbotron bg-white">
+        <h2 class="display-4 text-center">Dragon Ball Z Hangman</h2>
+        <p class="lead text-center">Guess the letters to figure out the unknown word. You have 12 chances to guess the correct word.</p>
+        <div class="row">
+            <div class="col">
+                <p class = "textID" id = "directions-text">Press any key to get started!</p>
+                <p class = "textID" id = "already-guessed">Already Guessed: </p>
+                <p class = "textID" id = "guess-remaining">Guesses: </p>
+                <p class = "textID" id = "under-line"></p>
+                <p class = "textID" id = "win-text">Wins: </p>
+                <p class = "textID" id = "lose-text">Loses: </p>
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <div class="btn-group-vertical" role="group">
+                    <button type="button" class="btn btn-secondary" onclick = "play('main-theme')">Main Theme</button>
+                    <button type="button" class="btn btn-secondary" onclick = "play('broly')">Broly Theme</button>
+                    <button type="button" class="btn btn-secondary" onclick = "play('vegeta')">Vegeta Theme</button>
+                    <button type="button" class="btn btn-secondary" onclick = "play('goku')">Ultra Instinct Theme</button>
+                </div>
+                
+            </div>
+        </div>
+      </div>
   <script src = "assets/javascript/game.js"></script>
   
 </body>

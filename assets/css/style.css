@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Saiyan-Sans";
+  src: url("../images/Saiyan-Sans.ttf") format("truetype"); 
+
+}
+
+body {
+  font-family: "Saiyan-Sans";
+  background-image: url("../images/dragon\ ball\ ssj4.png");
+  background-size: 100% 140%;
+  color: #EBD406;
+
+}
+
+.jumbotron {
+  background: none !important;
+}
+
+.btn {
+  background: none !important;
+  border: none;
+  color: #EBD406;
+  padding: .5rem 7.5rem;
+  font-size: 2rem;
+}
+
+.textID {
+  font-size: 2rem;
+}
