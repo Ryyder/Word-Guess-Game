@@ -13,8 +13,7 @@ var underline = document.getElementById("under-line"); //underline for each lett
 var mainTheme = document.getElementById("main-theme"); //plays music on click
 
 // array of games "words" that can be chosen
-var gameArray = ["goku", "vegeta", "broly", "yamcha", "krillin", "cell", "janemba", "shenron", "bulma",
-  "gohan", "trunks", "goten", "jiren", "zamasu"];
+var gameArray = ["goku", "vegeta", "broly", "yamcha", "krillin", "cell", "janemba", "shenron", "bulma", "gohan", "trunks", "goten", "jiren", "zamasu"];
 
 // "_" filled into this array
 var underScore = [];
@@ -88,6 +87,7 @@ function winCondition() {
 function resetGame() {
   // choose new word
   chosenGame = gameArray[Math.floor(Math.random() * gameArray.length)];
+  console.log(chosenGame);
 
   //redo the length of the string
   nameLength = chosenGame.length;
@@ -102,6 +102,9 @@ function resetGame() {
 
   // regenerate underscores
   underScoreFunc();
+
+  // print out the underscores to html document
+  underline.innerHTML = "Word: " + underScore;
 
   // repopulate splitArray with "_"'s
   splitLetter();
@@ -171,14 +174,20 @@ document.onkeyup = function (event) {
     //check for our win condition
     winCondition();
   }
-  // if userGuess is not in the string, decrease guessRemaining,and push letter in guessArray
+  // if userGuess is not in the string, decrease guessRemaining, and push letter in guessArray
   else {
+
+    // put userguess in the guessArray
+    guessArray.push(userGuess);
 
     // play sound on incorrect letter guessed
     document.getElementById("hit").play();
-    guessRemaining--;
-    guessArray.push(userGuess);
     
+    // decrease guesses remaining
+    guessRemaining--;
+
+    // check for lose condition
+    loseCondition();
   }
 
 }
